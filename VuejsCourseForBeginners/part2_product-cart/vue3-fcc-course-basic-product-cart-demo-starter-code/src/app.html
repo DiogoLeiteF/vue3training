@@ -120,6 +120,9 @@
         },
         toggleViewCart() {
           this.viewCart = !this.viewCart
+        },
+        removeItem(name){
+          delete this.cart[name]
         }
       },
       async mounted() {
@@ -128,10 +131,11 @@
         this.inventory = data
       }
 
+
     })
 
     app.component('asside', {
-      props: ['toggle', 'cart', 'inventory'],
+      props: ['toggle', 'cart', 'inventory', 'removeItem'],
       computed: {
 
       },
@@ -147,7 +151,6 @@
           for (let key in this.cart) {
             total += this.cart[key] * this.getPrice(key)
           }
-          console.log(this.cart.key)
           return (total).toFixed(2)
         }
 
@@ -183,7 +186,7 @@
                   <td class="center">{{ quantity }}</td>
                   <td>\${{quantity * getPrice(key)}}</td>
                   <td class="center">
-                    <button class="btn btn-light cart-remove">
+                    <button @click=removeItem(key) class="btn btn-light cart-remove">
                       &times;
                     </button>
                   </td>
@@ -191,7 +194,7 @@
               </tbody>
             </table>
 
-            <p class="center"><em>No items in cart</em></p>
+            <p v-if="!Object.keys(cart).length" class="center"><em>No items in cart</em></p>
             <div class="spread">
               <span><strong>Total:</strong> \${{ calculateTotal() }}</span>
               <button class="btn btn-light">Checkout</button>
