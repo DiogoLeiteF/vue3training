@@ -85,7 +85,12 @@
 
     </main>
 
-    <asside v-if="viewCart" :toggle="toggleViewCart" :cart="cart" :inventory="inventory" />
+    <asside v-if="viewCart" 
+    :toggle="toggleViewCart" 
+    :cart="cart" 
+    :inventory="inventory" 
+    :remove="removeItem"
+    />
 
     <footer>
     </footer>
@@ -103,23 +108,26 @@
       },
       computed: {
         cartItems() {
-          let sum_ = 0
-          for (let k in this.cart) {
-            sum_ += this.cart[k]
-          }
+          let sum_ = Object.values(this.cart).reduce((acc, curr) => {
+            return acc + curr
+          }, 0)
           return sum_
-        }
+          }, 
+
+
       },
       methods: {
         addToCart(name, index) {
           if (!this.cart[name]) this.cart[name] = 0
           this.cart[name] += this.inventory[index].quantity
+          this.inventory[index].quantity = ""
           console.log(this.cart)
         },
         toggleViewCart() {
           this.viewCart = !this.viewCart
         },
         removeItem(name){
+          
           delete this.cart[name]
         }
       },
@@ -133,7 +141,7 @@
     })
 
     app.component('asside', {
-      props: ['toggle', 'cart', 'inventory', 'removeItem'],
+      props: ['toggle', 'cart', 'inventory', 'remove'],
       computed: {
 
       },
@@ -184,7 +192,7 @@
                   <td class="center">{{ quantity }}</td>
                   <td>\${{quantity * getPrice(key)}}</td>
                   <td class="center">
-                    <button @click=removeItem(key) class="btn btn-light cart-remove">
+                    <button @click="remove(key)" class="btn btn-light cart-remove">
                       &times;
                     </button>
                   </td>
