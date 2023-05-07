@@ -1,85 +1,67 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <header class="top-bar spread">
+    <nav class="top-bar-nav">
+      <RouterLink to="/" class="top-bar-link">
+        <i class="icofont-spoon-and-fork"></i>
+        <span>Home</span>
+      </RouterLink>
+      <RouterLink to="/products" class="top-bar-link">
+        <span>Products</span>
+      </RouterLink>
+      <RouterLink to="/past-orders" class="top-bar-link">
+        <span>Past Orders</span>
+      </RouterLink>
+    </nav>
+    <div @click="toggleViewCart" class="top-bar-cart-link">
+      <i class="icofont-cart-alt icofont-1x"></i>
+      <span>Cart ({{ cartItems }})</span>
     </div>
   </header>
 
-  <RouterView />
+  <RouterView :inventory="inventory" :addToCart="addToCart" />
+
+  <Sidebar v-if="viewCart" :toggle="toggleViewCart" :cart="cart" :inventory="inventory" :remove="removeItem" />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+import Sidebar from '@/components/Sidebar.vue'
+import food from './food.json'
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default {
+  components: {
+    Sidebar
+  },
+  data() {
+    return {
+      viewCart: false,
+      inventory: food,
+      cart: {}
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+    }
+  },
+  methods: {
+    addToCart(name, quantity) {
+      if (!this.cart[name]) this.cart[name] = 0
+      this.cart[name] += quantity
+      console.log(this.cart)
+    },
+    toggleViewCart() {
+      this.viewCart = !this.viewCart
+    },
+    removeItem(name) {
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+      delete this.cart[name]
+    }
+  },
+  computed: {
+    cartItems() {
+      let sum_ = Object.values(this.cart).reduce((acc, curr) => {
+        return acc + curr
+      }, 0)
+      return sum_
+    },
   }
 }
-</style>
+
+</script>
