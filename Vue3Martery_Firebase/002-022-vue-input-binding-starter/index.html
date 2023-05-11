@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 3 Reactivity</title>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="app.js" defer></script>
+  <style type="text/css">
+    body,
+    input,
+    button {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-size: 20pt;
+    }
+
+    div {
+      padding: 0.3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <label for="riddle1">Interpolation is also called </label>
+      <input type="text" id="riddle1" v-model="riddle1">
+    </div>
+    <div v-if="level1">
+      <label for="riddle2">Current Vue version </label>
+      <input type="text" id="riddle1" v-model.number="riddle2">
+    </div>
+    <div v-if="level2">
+      <div>
+        <input type="checkbox" v-model="riddle3" value="Reactive" id="riddle3">
+        <label for="riddle3">Reactive</label>
+      </div>
+      <div>
+        <input type="checkbox" v-model="riddle3" value="Computed" id="riddle4">
+        <label for="riddle4">Computed</label>
+      </div>
+      <div>
+        <input type="checkbox" v-model="riddle3" value="Variable" id="riddle6">
+        <label for="riddle6">Variable</label>   
+      </div>
+      <div>
+        <input type="checkbox" v-model="riddle3" value="Method" id="riddle5">
+        <label for="riddle5">Method</label>
+      </div>
+    </div>
+    
+    <div v-if="level3">
+      <input type="checkbox" v-model="ready" id="ready">
+      <label for="ready">Ready</label>   
+    </div>
+    <div v-if="level3 && ready">
+      Congrats
+    </div>
+  </div>
+</body>
+
+</html>

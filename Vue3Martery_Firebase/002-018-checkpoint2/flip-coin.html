@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Flip a Coin</title>
+  <script
+    src="https://unpkg.com/vue@3.2.29/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Flip a Coin</h1>
+    <!-- Display the current state of the coin -->
+    <p>{{ message }}</p>
+    <!-- When button is clicked something needs to happen -->
+    <button @click="flipCoin">Flip!</button>
+    <button @click="reset">Reset</button>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data(){
+        return {
+          coin: "",
+          choices: ['head', 'tail']
+        }
+      },
+      computed: {
+        message (){
+          if (this.coin === ""){
+            message = 'Start the game...' 
+          }else{
+            message = this.coin
+          }
+          return message
+        }
+      },
+      methods:{
+        flipCoin(){
+          this.coin = this.choices[Math.floor(Math.random()*2)]
+          console.log(this.coin)
+        },
+        reset(){
+          this.coin = ""
+        }
+      },
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+
+</html>

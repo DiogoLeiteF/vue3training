@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vue Basics Checkpoint no 1</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Remember how we render data?  -->
+    <div>Hello, {{ name }}</div>
+    <div>{{ message }}</div>
+  </div>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          name: 'John',
+          message: 'Happy to see you!'
+        };
+      }
+    });
+
+    // Is this in correct place to be rendered by Vue?
+    // const message = 'Happy to see you!';
+
+    // Is Vue active on this site?
+    app.mount('#app');
+  </script>
+</body>
+
+</html>

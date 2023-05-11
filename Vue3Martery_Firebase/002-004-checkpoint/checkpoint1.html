@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vue Basics Checkpoint no 1</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Remember how we render data?  -->
+   <div>Price {{price}}$</div>
+   <div>Tax Rate {{taxRate}}%</div>
+   <div>With VAT {{withVat}}$</div>
+   <div>With VAT {{withVat2}}$</div>
+   <div>Items {{items}}
+    <button @click="increment">Add</button>
+    <button @click="decrement">Remove</button>
+   </div>
+   <div>Total {{total}}$</div>
+  </div>
+  <script>
+    const vat = 1.23;
+    const app = Vue.createApp({
+      data() {
+        return {
+          price:4,
+          items:0,
+        }
+      },
+      computed:{
+        taxRate(){
+          return (vat *100)-100
+        },
+        withVat(){
+          return this.price * vat
+        },
+        total(){
+          return this.items * this.withVat
+        }
+      },
+      methods:{
+        increment(){
+          this.items ++
+        },
+        decrement(){
+          this.items --
+        },
+      },
+    });
+
+    // Is this in correct place to be rendered by Vue?
+
+
+    // Is Vue active on this site?
+    app.mount('#app')
+  </script>
+</body>
+
+</html>
