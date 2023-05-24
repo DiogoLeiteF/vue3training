@@ -32,7 +32,10 @@ const app = Vue.createApp({
   },
   computed: {
     displayedTasks() {
-      return this.tasks.filter(task => !this.onlyPending || !task.done)
+      // return this.tasks.filter(task => !this.onlyPending || !task.done)
+      return [...this.tasks] // create a copy of the array
+      .sort((a, b) => b.priority - a.priority  )
+      .filter(task => !this.onlyPending || !task.done)
     }
   },
   methods: {
@@ -70,15 +73,27 @@ app.component('todo-list-item', {
     // }
   },
   emits: ['update:done', 'update:priority'],
-  template: `<div 
-    class="bg-white shadow-sm rounded-md text-gray-700 text-xs md:text-sm p-4">
-      {{task.description}}
+  template: 
+  `<div 
+    class="bg-white shadow-sm rounded-md text-gray-700 text-xs md:text-sm p-4"
+    :class="{'opacity-25 line-through' : task.done}">
+    <div>{{task.description}}</div>
+    
+    <div class="py-4 bg-white">
+      <base-checkbox 
+          class="mb-2"
+          @update:model-value="$emit(
+          'update:done', $event)"
+          :model-value="done"
+        >Done</base-checkbox>
+      <base-checkbox
+        @update:model-value="$emit(
+        'update:priority', $event)"
+        :model-value="priority"
+        >Prioritized
+      </base-checkbox>
     </div>
-    <div class="p-4 bg-white">
-      <base-checkbox label="Done"></base-checkbox>
-      <base-checkbox label="Prioritized"></base-checkbox>
-    </div>
-    `
+  </div>`
 });
 
 app.component('add-task-input', {
@@ -94,11 +109,15 @@ app.component('add-task-input', {
       this.task = '';
     }
   },
+  mounted() {
+    this.$refs.input.focus();
+  },
   template: `<input type="text" 
+    ref="input"
     placeholder="Enter task and hit enter"
     @keyup.enter="add"
     v-model="task"
-    class="block w-full rounded-md shadow-sm text-lg p-4" />`
+    class="block w-full rounded-md shadow-sm text-lg p-4" />`,
 });
 
 app.component('base-checkbox', {
@@ -107,15 +126,12 @@ app.component('base-checkbox', {
       type: Boolean,
       default: false,
     },
-    label: {
-      type: String,
-    },
   },
   emits: ['update:modelValue'],
   methods: {
     onChange() {
       this.$emit(
-        'update:modelValue', !this.modelValue
+        "update:modelValue", !this.modelValue
       );
     }
   },
@@ -125,7 +141,7 @@ app.component('base-checkbox', {
       :checked=modelValue
       @change="onChange"
     />
-    <label>{{ label }}</label>
+    <label><slot>Checkbox</slot></label>
   </div>`
 })
 
