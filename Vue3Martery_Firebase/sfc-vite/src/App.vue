@@ -1,22 +1,13 @@
 <template>
   <div class="mb-4">
-    <AddTaskInput @added="taskAdded" />
-    <BaseCheckbox
-      v-model="onlyPending"
-      class="mb-4 p-4 text-gray-600 text-sm font-weight-100"
-    >
-      Only pending
-      tasks
-    </BaseCheckbox>
+    <AddTaskInput @added="taskAdded"></AddTaskInput>
+    <BaseCheckbox class="mb-4 p-4 text-gray-600 text-sm font-weight-100" v-model="onlyPending">Only pending
+      tasks</BaseCheckbox>
   </div>
   <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-    <TodoListItem
-      v-for="task in displayedTasks"
-      :key="task.id"
-      v-model:done="task.done"
-      v-model:priority="task.priority"
-      :task="task"
-    />
+    <TodoListItem v-for="task in displayedTasks" :task="task" :key="task.id" v-model:done="task.done"
+      v-model:priority="task.priority">
+    </TodoListItem>
   </div>
 </template>
 
@@ -34,6 +25,23 @@ export default {
     BaseCheckbox,
     AddTaskInput,
     TodoListItem,
+  },
+  computed: {
+    displayedTasks() {
+      return [...this.tasks] // create a copy of the array
+        .sort((a, b) => b.priority - a.priority)
+        .filter(task => !this.onlyPending || !task.done);
+    },
+  },
+  methods: {
+    taskAdded(task) {
+      this.tasks.push({
+        id: nextTaskId++,
+        description: task,
+        done: false,
+        priority: false,
+      });
+    },
   },
   data() {
     return {
@@ -63,23 +71,6 @@ export default {
         done: false,
       }],
     }
-  },
-  computed: {
-    displayedTasks() {
-      return [...this.tasks] // create a copy of the array
-        .sort((a, b) => b.priority - a.priority)
-        .filter(task => !this.onlyPending || !task.done);
-    },
-  },
-  methods: {
-    taskAdded(task) {
-      this.tasks.push({
-        id: nextTaskId++,
-        description: task,
-        done: false,
-        priority: false,
-      });
-    },
   }
 }
 </script>

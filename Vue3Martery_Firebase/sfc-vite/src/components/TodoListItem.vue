@@ -8,16 +8,14 @@
     <div class="py-4 bg-white">
       <BaseCheckbox
         class="mb-2"
-        :model-value="done"
         @update:model-value="$emit('update:done', $event)"
-      >
-        Done
+        :model-value="done"
+        >Done
       </BaseCheckbox>
       <BaseCheckbox
-        :model-value="priority"
         @update:model-value="$emit('update:priority', $event)"
-      >
-        Prioritized
+        :model-value="priority"
+        >Prioritized
       </BaseCheckbox>
     </div>
   </div>
