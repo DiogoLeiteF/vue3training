@@ -3,16 +3,15 @@
 
 <head>
   <title>Vue Basics Checkpoint no 1</title>
-  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body>
   <div id="app">
     <!-- Remember how we render data?  -->
-   <div>Price {{price}}$</div>
+   <div>Price <input type="number" v-model="price">$</div>
    <div>Tax Rate {{taxRate}}%</div>
    <div>With VAT {{withVat}}$</div>
-   <div>With VAT {{withVat2}}$</div>
    <div>Items {{items}}
     <button @click="increment">Add</button>
     <button @click="decrement">Remove</button>
@@ -21,10 +20,10 @@
   </div>
   <script>
     const vat = 1.23;
-    const app = Vue.createApp({
+    const vm = Vue.createApp({
       data() {
         return {
-          price:4,
+          price:0,
           items:0,
         }
       },
@@ -33,7 +32,7 @@
           return (vat *100)-100
         },
         withVat(){
-          return this.price * vat
+          return (this.price * vat ).toFixed(2); 
         },
         total(){
           return this.items * this.withVat
@@ -53,7 +52,7 @@
 
 
     // Is Vue active on this site?
-    app.mount('#app')
+    vm.mount('#app')
   </script>
 </body>
 

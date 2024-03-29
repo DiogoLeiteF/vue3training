@@ -3,8 +3,8 @@
 
 <head>
   <title>Flip a Coin</title>
-  <script
-    src="https://unpkg.com/vue@3.2.29/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 </head>
 
 <body>
@@ -13,36 +13,62 @@
     <!-- Display the current state of the coin -->
     <p>{{ message }}</p>
     <!-- When button is clicked something needs to happen -->
+    <div>
+      <div>
+        Chose
+        <button @click="chose('head')">Head</button>
+        <button @click="chose('tail')">Tail</button>
+you chose <b>{{ choiceInput }}</b>
+      </div>
+    </div>
+    <br>
     <button @click="flipCoin">Flip!</button>
     <button @click="reset">Reset</button>
+    <p>Points: {{ points }}</p>
+    <p>Ratio: {{ ratio }}%</p>
   </div>
 
   <script>
     const app = Vue.createApp({
-      data(){
+      data() {
         return {
           coin: "",
-          choices: ['head', 'tail']
+          choices: ['head', 'tail'],
+          choiceInput: "NOTHING",
+          points:0,
+          totalPlays: 0,
         }
       },
       computed: {
-        message (){
-          if (this.coin === ""){
-            message = 'Start the game...' 
-          }else{
-            message = this.coin
+        message() {
+          if (this.coin === "") {
+            return 'Start the game...'
+          } else {
+            return this.coin
           }
-          return message
-        }
-      },
-      methods:{
-        flipCoin(){
-          this.coin = this.choices[Math.floor(Math.random()*2)]
-          console.log(this.coin)
+        }, 
+        ratio() {
+          return this.totalPlays > 0 ? ((this.points / this.totalPlays) *100).toFixed(2) : 0
         },
-        reset(){
-          this.coin = ""
-        }
+      },
+      methods: {
+        flipCoin() {
+          if (this.choiceInput === "NOTHING") return 
+          this.coin = this.choices[Math.floor(Math.random() * 2)]
+          console.log(this.coin)
+          this.totalPlays ++
+          if (this.coin === this.choiceInput) this.points++
+        },
+        reset() {
+          this.coin = "";
+          this.choiceInput = "NOTHING";
+          this.points=0;
+          this.totalPlays = 0;
+        },
+        chose(face){
+          console.log(face)
+          this.choiceInput = face
+        },
       },
     })
 
