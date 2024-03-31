@@ -43,25 +43,30 @@ const vm = Vue.createApp({
   computed: {
     doneTodos() {
       // TO BE IMPLEMENTED
-      return this.todos.filter(elem => elem.done);
+      return this.todos.filter(item => item.done);
     },
     paidInvoices() {
       // TO BE IMPLEMENTED
-      return this.invoices.filter(elem => elem.paid);
+      return this.invoices.filter(invoice => invoice.paid);
     },
     sortedInvoices() {
       // TO BE IMPLEMENTED
-      if(this.onlyPaid){
-        return this.sortOrder == 'ASC' ? this.paidInvoices.sort((a, b) => a.id - b.id) : this.paidInvoices.sort((a, b) => b.id - a.id)
-      }else{
-        return this.sortOrder == 'ASC' ? this.invoices.sort((a, b) => a.id - b.id) : this.invoices.sort((a, b) => b.id - a.id)
+      const list = this.onlyPaid ? this.paidInvoices : this.invoices
+      if (this.sortOrder == "ASC") {
+        return [...list].sort((a, b) => a.id - b.id);
+      } else {
+        return [...list].sort((a, b) => b.id - a.id);
       }
-    }
+    },
   },
   methods: {
     toggleSortOrder() {
-      this.sortOrder == 'ASC' ? this.sortOrder = 'DESC' : this.sortOrder = 'ASC'
+      // TO BE IMPLEMENTED
+      if (this.sortOrder == "ASC") {
+        this.sortOrder = "DESC"
+      } else {
+        this.sortOrder = "ASC";
+      }
     }
   }
-
 }).mount('#app');
